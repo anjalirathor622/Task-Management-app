@@ -1,13 +1,21 @@
 import axios from "axios"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { RxCross2 } from "react-icons/rx"
 
-const InputData = ({ inputDiv, setInputDiv }) => {
+const InputData = ({ inputDiv, setInputDiv, updateData, setUpdateData }) => {
 	const [data, setData] = useState({
 		title: "",
 		desc: "",
 		dueDate: ""
 	})
+	useEffect(() => {
+		setData({
+			title: updateData.title,
+			desc: updateData.desc,
+			dueDate: updateData.dueDate
+		})
+	}, [updateData])
+
 	const headers = {
 		id: localStorage.getItem("id"),
 		authorization: `Bearer ${localStorage.getItem("token")}`
@@ -17,15 +25,33 @@ const InputData = ({ inputDiv, setInputDiv }) => {
 		setData({ ...data, [name]: value })
 	}
 	const submitData = async () => {
-		if (
-			data.title === "" ||
-			data.desc === "" ||
-			data.dueDate === ""
-		) {
+		if (data.title === "" || data.desc === "" || data.dueDate === "") {
 			alert("All fields are required")
 		} else {
 			await axios.post("http://localhost:1000/task/createTask", data, {
 				headers
+			})
+			
+			setData({
+				title: "",
+				desc: "",
+				dueDate: ""
+			})
+			setInputDiv("hidden")
+		}
+	}
+	const updateTask = async () => {
+		if (data.title === "" || data.desc === "" || data.dueDate === "") {
+			alert("All fields are required")
+		} else {
+			await axios.put(`http://localhost:1000/task/updateTask/${updateData.id}`, data, {
+				headers
+			})
+			setUpdateData({
+				id: "",
+				title: "",
+				desc: "",
+				dueDate: ""
 			})
 			setData({
 				title: "",
@@ -46,7 +72,20 @@ const InputData = ({ inputDiv, setInputDiv }) => {
 				<div className="w-2/6 bg-gray-900 p-4 rounded">
 					<div className="flex justify-end">
 						<button
-							onClick={() => setInputDiv("hidden")}
+							onClick={() => {
+								setInputDiv("hidden")
+								setData({
+									title: "",
+									desc: "",
+									dueDate: ""
+								})
+								setUpdateData({
+									id: "",
+									title: "",
+									desc: "",
+									dueDate: ""
+								})
+							}}
 							className="text-2xl"
 						>
 							<RxCross2 />
@@ -80,13 +119,21 @@ const InputData = ({ inputDiv, setInputDiv }) => {
 						value={data.desc}
 						onChange={handleChange}
 					></textarea>
-
-					<button
-						className="px-3 py-2 bg-blue-400 rounded text-black text-xl font-semibold"
-						onClick={submitData}
-					>
-						Submit
-					</button>
+					{updateData.id === "" ? (
+						<button
+							className="px-3 py-2 bg-blue-400 rounded text-black text-xl font-semibold"
+							onClick={submitData}
+						>
+							Submit
+						</button>
+					) : (
+						<button
+							className="px-3 py-2 bg-blue-400 rounded text-black text-xl font-semibold"
+							onClick={updateTask}
+						>
+							Update
+						</button>
+					)}
 				</div>
 			</div>
 		</>
