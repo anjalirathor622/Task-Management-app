@@ -1,9 +1,9 @@
 import React from "react"
-import { GrView } from "react-icons/gr"
 import { MdDeleteForever } from "react-icons/md"
 import { FaRegEdit } from "react-icons/fa"
 import { MdOutlineAddCircle } from "react-icons/md"
 import axios from "axios"
+import Swal from "sweetalert2"
 
 const Cards = ({ home, setInputDiv, data, setUpdateData }) => {
 	const headers = {
@@ -22,28 +22,29 @@ const Cards = ({ home, setInputDiv, data, setUpdateData }) => {
 			console.log(error)
 		}
 	}
+
 	//delete task funtion
 	const deleteTask = async (id) => {
 		try {
-			if (window.confirm("you want to remove this task!") === true) {
-				const response = await axios.delete(
-					`http://localhost:1000/task/deleteTask/${id}`,
-					{ headers }
-				)
-				alert(response.data.massage)
-			}
+			await axios.delete(`http://localhost:1000/task/deleteTask/${id}`, {
+				headers
+			})
+			Swal.fire({
+				title: "Task Deleted Successfully!",
+				icon: "success"
+			})
 		} catch (error) {
 			console.log(error)
 		}
 	}
 	//edit task function
-	const updateTask = (id,title,desc,dueDate)=>{
+	const updateTask = (id, title, desc, dueDate) => {
 		setInputDiv("fixed")
 		setUpdateData({
-			id:id,
-      title:title,
-      desc:desc,
-      dueDate:dueDate
+			id: id,
+			title: title,
+			desc: desc,
+			dueDate: dueDate
 		})
 	}
 	return (
@@ -60,7 +61,8 @@ const Cards = ({ home, setInputDiv, data, setUpdateData }) => {
 							</p>
 						</div>
 						<h4 className="pb-2">
-							dueDate : {(new Date(item.dueDate).toLocaleDateString())}
+							dueDate :{" "}
+							{new Date(item.dueDate).toLocaleDateString()}
 						</h4>
 						<div className="w-full flex flex-row flex-center">
 							<button
@@ -76,10 +78,17 @@ const Cards = ({ home, setInputDiv, data, setUpdateData }) => {
 									: "Pending..."}
 							</button>
 							<div className="w-3/6 flex justify-around text-2xl">
-								<button>
-									<GrView />
-								</button>
-								<button onClick={() => updateTask(item._id,item.title,item.desc,item.dueDate)}>
+								<button
+									className="p-3 ml-1"
+									onClick={() =>
+										updateTask(
+											item._id,
+											item.title,
+											item.desc,
+											item.dueDate
+										)
+									}
+								>
 									<FaRegEdit />
 								</button>
 								<button onClick={() => deleteTask(item._id)}>

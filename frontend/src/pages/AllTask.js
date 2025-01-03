@@ -26,7 +26,7 @@ const AllTask = () => {
 			setData(response.data.data)
 		}
 		fetch()
-	},[])
+	},[data])
 	return (
 		<>
 			<div>
@@ -48,7 +48,7 @@ const AllTask = () => {
 				inputDiv={inputDiv}
 				setInputDiv={setInputDiv}
 				updateData={updateData}
-        setUpdateData={setUpdateData}
+				setUpdateData={setUpdateData}
 			/>
 		</>
 	)

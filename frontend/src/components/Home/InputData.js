@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { RxCross2 } from "react-icons/rx"
+import Swal from "sweetalert2"
 
 const InputData = ({ inputDiv, setInputDiv, updateData, setUpdateData }) => {
 	const [data, setData] = useState({
@@ -26,12 +27,18 @@ const InputData = ({ inputDiv, setInputDiv, updateData, setUpdateData }) => {
 	}
 	const submitData = async () => {
 		if (data.title === "" || data.desc === "" || data.dueDate === "") {
-			alert("All fields are required")
+			Swal.fire({
+				title: "Sorry",
+				text: "All feilds are required!",
+				icon: "warning",
+				background: "#111827",
+				color: "#fff"
+			})
 		} else {
 			await axios.post("http://localhost:1000/task/createTask", data, {
 				headers
 			})
-			
+
 			setData({
 				title: "",
 				desc: "",
@@ -42,11 +49,21 @@ const InputData = ({ inputDiv, setInputDiv, updateData, setUpdateData }) => {
 	}
 	const updateTask = async () => {
 		if (data.title === "" || data.desc === "" || data.dueDate === "") {
-			alert("All fields are required")
-		} else {
-			await axios.put(`http://localhost:1000/task/updateTask/${updateData.id}`, data, {
-				headers
+			Swal.fire({
+				title: "Sorry",
+				text: "All feilds are required!",
+				icon: "warning",
+				background: "#111827",
+				color: "#fff"
 			})
+		} else {
+			await axios.put(
+				`http://localhost:1000/task/updateTask/${updateData.id}`,
+				data,
+				{
+					headers
+				}
+			)
 			setUpdateData({
 				id: "",
 				title: "",

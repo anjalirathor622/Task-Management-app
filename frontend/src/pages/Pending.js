@@ -14,7 +14,7 @@ const Pending = () => {
 				"http://localhost:1000/task/pendingTasks",
 				{ headers }
 			)
-      console.log(response)
+      // console.log(response)
 			setData(response.data.data)
 		}
 		fetch()
