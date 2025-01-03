@@ -26,7 +26,7 @@ const AllTask = () => {
 			setData(response.data.data)
 		}
 		fetch()
-	},[data])
+	}, [data])
 	return (
 		<>
 			<div>

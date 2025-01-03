@@ -18,7 +18,7 @@ const CompletedTask = () => {
 			setData(response.data.data)
 		}
 		fetch()
-	},[data])
+	}, [data])
 	return <Cards home={false} data={data} />
 }
 

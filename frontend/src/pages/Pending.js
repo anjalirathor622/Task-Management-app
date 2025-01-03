@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import Cards from '../components/Home/Cards'
-import axios from 'axios'
+import React, { useEffect, useState } from "react"
+import Cards from "../components/Home/Cards"
+import axios from "axios"
 
 const Pending = () => {
-  const [data,setData] = useState()
-  const headers = {
+	const [data, setData] = useState()
+	const headers = {
 		id: localStorage.getItem("id"),
 		authorization: `Bearer ${localStorage.getItem("token")}`
 	}
@@ -14,14 +14,12 @@ const Pending = () => {
 				"http://localhost:1000/task/pendingTasks",
 				{ headers }
 			)
-      // console.log(response)
+			// console.log(response)
 			setData(response.data.data)
 		}
 		fetch()
-	},[])
-  return (
-    <Cards home={false} data={data}/>
-   )
+	}, [])
+	return <Cards home={false} data={data} />
 }
 
 export default Pending
