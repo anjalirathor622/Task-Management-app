@@ -3,8 +3,31 @@ import { GrView } from "react-icons/gr";
 import { MdDeleteForever } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import { MdOutlineAddCircle } from "react-icons/md";
+import axios from "axios";
 
 const Cards = ({home, setInputDiv,data}) => {
+	const headers = {
+		id: localStorage.getItem("id"),
+		authorization: `Bearer ${localStorage.getItem("token")}`
+	  }
+	const handleCompleteTask = async(id)=>{
+		try {
+			await axios.put(`http://localhost:1000/task/updateTaskStatus/${id}`,{},{headers})
+		} catch (error) {
+			console.log(error)
+		}
+	}
+	const deleteTask = async(id)=>{
+		try {
+			
+			if (window.confirm("you want to remove this task!") === true) {
+				const response = await axios.delete(`http://localhost:1000/task/deleteTask/${id}`,{headers})
+				alert(response.data.massage)
+			  }
+		} catch (error) {
+			console.log(error)
+		}
+	}
 	return (
 		<div className="grid grid-cols-4 gap-4 p-4">
 			{data &&
@@ -20,13 +43,13 @@ const Cards = ({home, setInputDiv,data}) => {
 						</div>
 							<h4 className="pb-2">dueDate : {item.dueDate}</h4>
 						<div className="w-full flex flex-row flex-center">
-							<button className={`${item.completed===true?"bg-green-600":"bg-red-500"} p-2 rounded-md w-3/6`}>
-								{item.completed===true? "completed":"pending..."}
+							<button onClick={()=>handleCompleteTask(item._id)} className={`${item.completed===true?"bg-green-600":"bg-red-500"} p-2 rounded-md w-3/6`}>
+								{item.completed===true? "Completed":"Pending..."}
 							</button>
 							<div className="w-3/6 flex justify-around text-2xl">
 								<button><GrView /></button>
 								<button><FaRegEdit /></button>
-								<button><MdDeleteForever /></button>
+								<button onClick={()=>deleteTask(item._id)}><MdDeleteForever /></button>
 							</div>
 						</div>
 					</div>
