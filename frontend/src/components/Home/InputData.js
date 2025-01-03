@@ -27,6 +27,12 @@ const InputData = ({ inputDiv, setInputDiv }) => {
 			await axios.post("http://localhost:1000/task/createTask", data, {
 				headers
 			})
+			setData({
+				title: "",
+				desc: "",
+				dueDate: ""
+			})
+			setInputDiv("hidden")
 		}
 	}
 	return (

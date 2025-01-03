@@ -7,6 +7,12 @@ import axios from 'axios';
 const AllTask = () => {    
     const [inputDiv, setInputDiv] = useState("hidden")
     const [data,setData] = useState()
+    const [updateData, setUpdateData] = useState({
+      id:"",
+      title:"",
+      desc:"",
+      dueDate:""
+    })
     const headers = {
       id: localStorage.getItem("id"),
       authorization: `Bearer ${localStorage.getItem("token")}`
@@ -29,7 +35,7 @@ const AllTask = () => {
                 <MdOutlineAddCircle className='text-3xl text-gray-500 hover:text-gray-100  transition-all duration-300' />
             </button>
         </div>
-        {data && <Cards home={true} setInputDiv={setInputDiv} data={data.tasks} />}
+        {data && <Cards home={true} setInputDiv={setInputDiv} data={data.tasks} setUpdateData={setUpdateData}/>}
     </div>
     <InputData inputDiv={inputDiv} setInputDiv={setInputDiv} />
     </>
