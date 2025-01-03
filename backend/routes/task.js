@@ -5,11 +5,11 @@ const { authanticatToken } = require("./auth")
 //Create Tasks
 router.post("/createTask", authanticatToken, async (req, res) => {
 	try {
-		const { title, description, dueDate } = req.body
+		const { title, desc, dueDate } = req.body
 		const { id } = req.headers
 		const newTask = new Task({
 			title: title,
-			description: description,
+			desc: desc,
 			dueDate: new Date(`${dueDate}`)
 		})
 		const saveTask = await newTask.save()
@@ -52,10 +52,10 @@ router.delete("/deleteTask/:id", authanticatToken, async (req, res) => {
 router.put("/updateTask/:id", authanticatToken, async (req, res) => {
 	try {
 		const { id } = req.params
-		const { title, description, dueDate } = req.body
+		const { title, desc, dueDate } = req.body
 		const updatedTask = await Task.findByIdAndUpdate(id, {
 			title: title,
-			description: description,
+			desc: desc,
 			dueDate: new Date(`${dueDate}`)
 		})
 		res.status(200).json({ massage: "Task Updated Successfully" })

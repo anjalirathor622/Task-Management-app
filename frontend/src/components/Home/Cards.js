@@ -38,7 +38,7 @@ const Cards = ({home, setInputDiv,data}) => {
 								{item.title}
 							</h3>
 							<p className="text-gray-300 pt-2 my-2">
-								{item.description}
+								{item.desc}
 							</p>
 						</div>
 							<h4 className="pb-2">dueDate : {item.dueDate}</h4>
